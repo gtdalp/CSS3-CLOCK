@@ -2,4 +2,4 @@
 
 ###效果图:
 ![demo.png](./demo.png)<br/> <br/>
-###demo地址: <a href="https://gtdalp.github.io/widget/css3clock/css3-clockg.html">https://gtdalp.github.io/widget/css3clock/css3-clockg.html</a>
+###demo地址: <a href="https://gtdalp.github.io/widget/css3clock/css3-clock.html">https://gtdalp.github.io/widget/css3clock/css3-clock.html</a>
