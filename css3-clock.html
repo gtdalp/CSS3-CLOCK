@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>css3 数字时钟 翻页效果</title>
+</head>
+<body>
+<style type="text/css">
+@charset "UTF-8";
+html,body{
+    width:100%;
+    height:100%;
+    margin:0;
+    overflow:hidden;
+    background:#000;
+    font-family:"Arial";
+}
+p{
+    margin:0;
+}
+#css3-clock{
+    position: absolute;
+    top:50%;
+    left:50%;
+    width:1310px;
+    margin:-315px 0 0 -655px;
+    text-align: center;
+}
+.css3-clock-number{
+    position: relative;
+    float:left;
+    height:630px;
+    line-height:630px;
+    width:630px;
+    border-radius:50px;
+    background:#0C0C0C;  
+    overflow:hidden;
+}
+#css3-clock:before,
+.css3-clock-number .top-bg,
+.css3-clock-number .bottom-bg{
+    display: block;
+    position: absolute;
+    left:0;
+    width: 100%;
+    height:105px;
+    content:'';
+}
+#css3-clock:before{
+    top:310px;
+    height:6px;
+    z-index: 10;
+    background: #000;
+}
+.top-bg{
+    z-index: 10;
+    top:0;
+    border-radius:50px 50px 0 0;
+    background: #101010;
+}
+.bottom-bg{
+    bottom:0;
+    border-radius:0 0 50px 50px;
+    background: #0A0A0A;
+}
+.hours{
+    margin-right:50px;
+}
+.number{
+    position:relative;
+    display:inline-block;
+    font-family: Arial;
+    font-size:550px;
+    color:#AFAFAF;
+}
+.css3-clock-number.active{
+    transform-origin: 0 0;
+    animation: rotate 0.25s forwards;
+}
+@keyframes rotate{
+    0%{
+        transform:rotateX(180deg);
+    }
+    99%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+        transform:rotateX(0);
+    }
+}
+.hours-copy,
+.minutes-copy{
+    height:315px;
+    line-height: 0;
+    position: absolute;
+    bottom:0;
+}
+.hours-copy{
+    left:0;
+}
+.minutes-copy{
+    right:0;
+}
+</style>
+<div id="css3-clock">
+    <div class="css3-clock-number hours">
+        <p class="top-bg"></p>
+        <span class="number hours-one"></span>
+        <span class="number hours-two"></span>
+        <p class="bottom-bg"></p>
+    </div>
+    <div class="css3-clock-number hours-copy">
+        <span class="number hours-one"></span>
+        <span class="number hours-two"></span>
+        <p class="bottom-bg"></p>
+    </div>
+    <div class="css3-clock-number minutes">
+        <span class="number minutes-one"></span>
+        <span class="number minutes-two"></span>
+        <p class="bottom-bg"></p>
+    </div>
+    <div class="css3-clock-number minutes-copy">
+        <span class="number minutes-one"></span>
+        <span class="number minutes-two"></span>
+        <p class="bottom-bg"></p>
+    </div>
+</div>
+<script src="http://zeptojs.com/zepto.min.js"></script>
+<script>
+$(function() {
+    var date = new Date();
+    var loadHours = +date.getHours();
+    var loadMinutes = +date.getMinutes();
+    
+    function setAttrFn(cls, n) {
+
+        n = n < 10 ? ('0' + n) : n;
+        n = n.toString().split('');
+
+        for (var i = 0, len = cls.length; i < len; i++) {
+            $('.' + cls[i]).attr('data-number', n[i]).html(n[i]);
+        }
+        
+    }
+
+    function timer() {
+        var nowTime = new Date();
+        var h = +nowTime.getHours();
+        var m = +nowTime.getMinutes();
+
+        // 可以使用秒来测试 看效果
+        // var m = +nowTime.getSeconds();
+
+        // 判断时钟如果大于上一次 则翻转 时
+        if (h > loadHours || h === 0) {
+            $('.hours-copy').addClass('active');
+            loadHours = h;
+            if (loadHours === 10) {
+                loadHours = 0;
+            }
+        }
+
+        // 判断分钟如果大于上一次 则翻转 分
+        if (m > loadMinutes || m === 0) {
+            $('.minutes-copy').addClass('active');
+            loadMinutes = m;
+            if (loadMinutes === 59) {
+                loadMinutes = 0;
+            }
+        }
+
+        // 时
+        setAttrFn(['hours-one', 'hours-two'], h);
+
+        // 分
+        setAttrFn(['minutes-one', 'minutes-two'], m);
+
+        // 动画结束之后清除css3翻转动画
+        setTimeout(function () {
+            $('.active').removeClass('active');
+        }, 250);
+    }
+
+    timer();
+
+    setInterval(function () {
+        timer();
+    }, 1000);
+});
+</script>
+</body>
+</html>
